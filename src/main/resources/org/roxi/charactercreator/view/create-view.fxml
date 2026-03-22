@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="TOP_CENTER" spacing="15.0" prefHeight="650.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.roxi.charactercreator.controller.CreateCharacterController">
+    <padding><Insets top="25" right="40" bottom="25" left="40"/></padding>
+
+    <Label text="New Adventurer">
+        <font><Font name="System Bold" size="24.0" /></font>
+    </Label>
+
+    <GridPane vgap="10" hgap="10">
+        <columnConstraints>
+            <ColumnConstraints prefWidth="100"/>
+            <ColumnConstraints hgrow="ALWAYS"/>
+        </columnConstraints>
+
+        <Label text="Name:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+        <TextField fx:id="nameField" promptText="Character Name" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+        <Label text="Species:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+        <ComboBox fx:id="speciesBox" prefWidth="300" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+        <Label text="Class:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+        <ComboBox fx:id="classBox" prefWidth="300" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+    </GridPane>
+
+    <Separator />
+
+    <Label fx:id="pointsLabel" text="Points Remaining: 4" textFill="#2196f3">
+        <font>
+            <Font name="System Bold" size="16.0" />
+        </font>
+    </Label>
+
+    <GridPane alignment="CENTER" hgap="15.0" vgap="10.0">
+        <Label text="Strength:" GridPane.columnIndex="0" GridPane.rowIndex="0">
+            <font><Font name="System Bold" size="12.0" /></font>
+        </Label>
+        <Button mnemonicParsing="false" onAction="#subStr" prefWidth="30.0" text="-" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+        <Label fx:id="strLabel" alignment="CENTER" prefWidth="30.0" text="8" GridPane.columnIndex="2" GridPane.rowIndex="0">
+            <font><Font size="14.0" /></font>
+        </Label>
+        <Button mnemonicParsing="false" onAction="#addStr" prefWidth="30.0" text="+" GridPane.columnIndex="3" GridPane.rowIndex="0" />
+
+        <Label text="Dexterity:" GridPane.columnIndex="0" GridPane.rowIndex="1">
+            <font><Font name="System Bold" size="12.0" /></font>
+        </Label>
+        <Button mnemonicParsing="false" onAction="#subDex" prefWidth="30.0" text="-" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+        <Label fx:id="dexLabel" alignment="CENTER" prefWidth="30.0" text="8" GridPane.columnIndex="2" GridPane.rowIndex="1">
+            <font><Font size="14.0" /></font>
+        </Label>
+        <Button mnemonicParsing="false" onAction="#addDex" prefWidth="30.0" text="+" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+
+        <Label text="Constitution:" GridPane.columnIndex="0" GridPane.rowIndex="2">
+            <font><Font name="System Bold" size="12.0" /></font>
+        </Label>
+        <Button mnemonicParsing="false" onAction="#subCon" prefWidth="30.0" text="-" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+        <Label fx:id="conLabel" alignment="CENTER" prefWidth="30.0" text="8" GridPane.columnIndex="2" GridPane.rowIndex="2">
+            <font><Font size="14.0" /></font>
+        </Label>
+        <Button mnemonicParsing="false" onAction="#addCon" prefWidth="30.0" text="+" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+
+        <Label text="Intelligence:" GridPane.columnIndex="0" GridPane.rowIndex="3">
+            <font><Font name="System Bold" size="12.0" /></font>
+        </Label>
+        <Button mnemonicParsing="false" onAction="#subInt" prefWidth="30.0" text="-" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+        <Label fx:id="intLabel" alignment="CENTER" prefWidth="30.0" text="8" GridPane.columnIndex="2" GridPane.rowIndex="3">
+            <font><Font size="14.0" /></font>
+        </Label>
+        <Button mnemonicParsing="false" onAction="#addInt" prefWidth="30.0" text="+" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+
+        <Label text="Wisdom:" GridPane.columnIndex="0" GridPane.rowIndex="4">
+            <font><Font name="System Bold" size="12.0" /></font>
+        </Label>
+        <Button mnemonicParsing="false" onAction="#subWis" prefWidth="30.0" text="-" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+        <Label fx:id="wisLabel" alignment="CENTER" prefWidth="30.0" text="8" GridPane.columnIndex="2" GridPane.rowIndex="4">
+            <font><Font size="14.0" /></font>
+        </Label>
+        <Button mnemonicParsing="false" onAction="#addWis" prefWidth="30.0" text="+" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+
+        <Label text="Charisma:" GridPane.columnIndex="0" GridPane.rowIndex="5">
+            <font><Font name="System Bold" size="12.0" /></font>
+        </Label>
+        <Button mnemonicParsing="false" onAction="#subCha" prefWidth="30.0" text="-" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+        <Label fx:id="chaLabel" alignment="CENTER" prefWidth="30.0" text="8" GridPane.columnIndex="2" GridPane.rowIndex="5">
+            <font><Font size="14.0" /></font>
+        </Label>
+        <Button mnemonicParsing="false" onAction="#addCha" prefWidth="30.0" text="+" GridPane.columnIndex="3" GridPane.rowIndex="5" />
+    </GridPane>
+
+    <HBox spacing="20" alignment="CENTER">
+        <VBox.margin><Insets top="15.0" /></VBox.margin>
+        <Button fx:id="saveButton" text="Save Character" onAction="#handleSave" prefHeight="35.0" prefWidth="150" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold;"/>
+        <Button text="Cancel" onAction="#handleCancel" prefHeight="35.0" prefWidth="100"/>
+    </HBox>
+
+    <Label fx:id="statusLabel" textFill="RED" wrapText="true"/>
+</VBox>

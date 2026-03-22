@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.roxi.charactercreator.controller.HelloController">
+    <children>
+        <AnchorPane layoutY="-5.0" prefHeight="409.0" prefWidth="602.0">
+            <children>
+                <Button layoutX="234.0" layoutY="151.0" mnemonicParsing="false" onAction="#handleLoginClick" prefHeight="25.0" prefWidth="112.0" text="Login" />
+                <Button layoutX="235.0" layoutY="192.0" mnemonicParsing="false" onAction="#handleRegisterClick" prefHeight="25.0" prefWidth="112.0" text="Register" />
+                <Button layoutX="211.0" layoutY="238.0" mnemonicParsing="false" onAction="#handleVisitorClick" prefHeight="25.0" prefWidth="158.0" text="Enter without account" />
+            </children>
+        </AnchorPane>
+    </children>
+</AnchorPane>
