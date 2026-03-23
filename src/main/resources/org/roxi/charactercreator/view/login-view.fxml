@@ -22,7 +22,7 @@
                 </Label>
 
                 <Label fx:id="statusLabel" layoutX="227.0" layoutY="290.0" prefWidth="149.0" textFill="RED" />
-            <PasswordField fx:id="passwordField" layoutX="227.0" layoutY="216.0" />
+            <PasswordField fx:id="passwordField" layoutX="227.0" layoutY="216.0" promptText="password" />
            
             </children>
         </AnchorPane>

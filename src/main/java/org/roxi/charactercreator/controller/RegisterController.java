@@ -48,13 +48,17 @@ public class RegisterController {
             return;
         }
 
-        User newUser = new User(name, pass,email, Role.PLAYER);
-        boolean success = userService.registerNewUser(newUser);
+        try {
+            User newUser = new User(name, email, pass, Role.PLAYER);
+            boolean success = userService.registerNewUser(newUser);
 
-        if (success) {
-            goToLogin(event);
-        } else {
-            statusLabel.setText("Email already exists.");
+            if (success) {
+                goToLogin(event);
+            } else {
+                statusLabel.setText("Email already exists.");
+            }
+        } catch (IllegalArgumentException e) {
+            statusLabel.setText(e.getMessage());
         }
     }
 

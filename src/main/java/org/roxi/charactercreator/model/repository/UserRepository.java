@@ -33,6 +33,7 @@ public class UserRepository {
 
             if (rs.next()) {
                 return new User(
+                        rs.getInt("id"),
                         rs.getString("name"),
                         rs.getString("email"),
                         rs.getString("password"),
@@ -53,6 +54,7 @@ public class UserRepository {
 
             while (rs.next()) {
                 users.add(new User(
+                        rs.getInt("id"),
                         rs.getString("name"),
                         rs.getString("email"),
                         rs.getString("password"),

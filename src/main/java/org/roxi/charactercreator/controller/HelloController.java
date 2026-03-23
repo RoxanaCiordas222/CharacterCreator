@@ -27,7 +27,7 @@ public class HelloController {
         User visitor = new User("Guest", "visitor@dnd.com", "", Role.VISITOR);
         UserSession.getInstance().setLoggedInUser(visitor);
 
-        switchScene(event, "view/dashboard-view.fxml", "Character Dashboard (Read-Only)");
+        switchScene(event, "view/dashboard-view.fxml", "Character Dashboard");
     }
 
     private void switchScene(ActionEvent event, String fxmlPath, String title) {

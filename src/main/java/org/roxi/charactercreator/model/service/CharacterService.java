@@ -3,6 +3,8 @@ import org.roxi.charactercreator.model.DnDCharacter;
 import org.roxi.charactercreator.model.repository.CharacterRepository;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
 public class CharacterService {
     private final CharacterRepository repository;
 
@@ -46,6 +48,23 @@ public class CharacterService {
         checkStatBounds(character.getIntelligence(), "Intelligence");
         checkStatBounds(character.getWisdom(), "Wisdom");
         checkStatBounds(character.getCharisma(), "Charisma");
+    }
+    public List<DnDCharacter> searchAndSortCharacters(List<DnDCharacter> rawList, String query, String sortOption) {
+        List<DnDCharacter> filtered = rawList.stream()
+                .filter(c -> c.getName().toLowerCase().contains(query.toLowerCase()))
+                .collect(Collectors.toList());
+
+        if ("Species".equals(sortOption)) {
+            filtered.sort((c1, c2) -> {
+                String s1 = c1.getSpecies() != null ? c1.getSpecies().name() : "";
+                String s2 = c2.getSpecies() != null ? c2.getSpecies().name() : "";
+                return s1.compareTo(s2);
+            });
+        } else {
+            filtered.sort((c1, c2) -> c1.getName().compareToIgnoreCase(c2.getName()));
+        }
+
+        return filtered;
     }
 
     private void checkStatBounds(int stat, String statName) {

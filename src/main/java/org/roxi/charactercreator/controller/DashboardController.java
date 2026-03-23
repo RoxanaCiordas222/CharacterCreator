@@ -18,10 +18,9 @@ import org.roxi.charactercreator.model.repository.SqlCharacterRepository;
 import org.roxi.charactercreator.model.repository.UserRepository;
 import org.roxi.charactercreator.model.service.CharacterService;
 import org.roxi.charactercreator.model.service.UserService;
-
 import java.io.IOException;
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 public class DashboardController {
 
@@ -142,33 +141,9 @@ public class DashboardController {
 
     @FXML
     protected void handleSearch() {
-        String query = searchField.getText().toLowerCase();
-        User currentUser = UserSession.getInstance().getLoggedInUser();
-
-        if (currentUser.getRole() == Role.ADMIN) {
-            List<User> filtered = allUsers.stream()
-                    .filter(u -> u.getEmail().toLowerCase().contains(query))
-                    .collect(Collectors.toList());
-            updateUserListView(filtered);
-        } else {
-            List<DnDCharacter> filtered = allCharacters.stream()
-                    .filter(c -> c.getName().toLowerCase().contains(query))
-                    .collect(Collectors.toList());
-
-            String sortOption = sortComboBox.getValue();
-
-            if ("Species".equals(sortOption)) {
-                filtered.sort((c1, c2) -> {
-                    String species1 = c1.getSpecies() != null ? c1.getSpecies().name() : "UNKNOWN";
-                    String species2 = c2.getSpecies() != null ? c2.getSpecies().name() : "UNKNOWN";
-                    return species1.compareTo(species2);
-                });
-            } else {
-                filtered.sort((c1, c2) -> c1.getName().compareToIgnoreCase(c2.getName()));
-            }
-
-            updateCharacterListView(filtered);
-        }
+        String query = searchField.getText();
+        List<DnDCharacter> filtered = characterService.searchAndSortCharacters(allCharacters, query, sortComboBox.getValue());
+        updateCharacterListView(filtered);
     }
 
     @FXML protected void goToCreateCharacter(ActionEvent event) {
@@ -184,7 +159,7 @@ public class DashboardController {
         if (selectedItem == null) return;
 
         for (DnDCharacter c : allCharacters) {
-            String displayString = "Character: " + c.getName() + " (" + c.getSpecies() + ")";
+            String displayString ="Character: "+ c.getName() + " (" + c.getSpecies() + ")";
             if (displayString.equals(selectedItem)) {
                 UserSession.getInstance().setCharacterToEdit(c);
                 switchScene(event, "view/create-view.fxml", "Edit Character");
