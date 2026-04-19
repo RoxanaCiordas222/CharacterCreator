@@ -8,7 +8,7 @@ public class SqlCharacterRepository implements CharacterRepository {
     public void create(DnDCharacter character) {
         String sql = "INSERT INTO characters (id, ownerUsername, name, species, characterClass, level, strength, dexterity, constitution, intelligence, wisdom, charisma) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        try (Connection conn = DatabaseManager.getConnection();
+        try (Connection conn = DatabaseManager.getInstance().getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setString(1, character.getId());
@@ -36,7 +36,7 @@ public class SqlCharacterRepository implements CharacterRepository {
         String sql = "SELECT * FROM characters";
         List<DnDCharacter> characters = new ArrayList<>();
 
-        try (Connection conn = DatabaseManager.getConnection();
+        try (Connection conn = DatabaseManager.getInstance().getConnection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 
@@ -71,7 +71,7 @@ public class SqlCharacterRepository implements CharacterRepository {
     public void update(DnDCharacter character) {
         String sql = "UPDATE characters SET name = ?, species = ?, characterClass = ?, level = ?, strength = ?, dexterity = ?, constitution = ?, intelligence = ?, wisdom = ?, charisma = ? WHERE id = ?";
 
-        try (Connection conn = DatabaseManager.getConnection();
+        try (Connection conn = DatabaseManager.getInstance().getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setString(1, character.getName());
@@ -96,7 +96,7 @@ public class SqlCharacterRepository implements CharacterRepository {
     public void delete(String id) {
         String sql = "DELETE FROM characters WHERE id = ?";
 
-        try (Connection conn = DatabaseManager.getConnection();
+        try (Connection conn = DatabaseManager.getInstance().getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setString(1, id);
@@ -111,7 +111,7 @@ public class SqlCharacterRepository implements CharacterRepository {
         String sql = "SELECT * FROM characters WHERE ownerUsername = ?";
         List<DnDCharacter> characters = new ArrayList<>();
 
-        try (Connection conn = DatabaseManager.getConnection();
+        try (Connection conn = DatabaseManager.getInstance().getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setString(1, ownerEmail);

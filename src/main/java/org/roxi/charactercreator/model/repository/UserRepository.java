@@ -8,7 +8,7 @@ import java.util.List;
 public class UserRepository {
     public boolean register(User user) {
         String sql = "INSERT INTO users (email, name, password, role) VALUES (?, ?, ?, ?)";
-        try (Connection conn = DatabaseManager.getConnection();
+        try (Connection conn = DatabaseManager.getInstance().getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setString(1, user.getEmail());
@@ -24,7 +24,7 @@ public class UserRepository {
     }
     public User login(String email, String password) {
         String sql = "SELECT * FROM users WHERE email = ? AND password = ?";
-        try (Connection conn = DatabaseManager.getConnection();
+        try (Connection conn = DatabaseManager.getInstance().getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setString(1, email);
@@ -48,7 +48,7 @@ public class UserRepository {
     public List<User> readAllUsers() {
         String sql = "SELECT * FROM users";
         List<User> users = new ArrayList<>();
-        try (Connection conn = DatabaseManager.getConnection();
+        try (Connection conn = DatabaseManager.getInstance().getConnection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 
@@ -69,7 +69,7 @@ public class UserRepository {
 
     public void deleteUserByEmail(String email) {
         String sql = "DELETE FROM users WHERE email = ?";
-        try (Connection conn = DatabaseManager.getConnection();
+        try (Connection conn = DatabaseManager.getInstance().getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, email);
             pstmt.executeUpdate();

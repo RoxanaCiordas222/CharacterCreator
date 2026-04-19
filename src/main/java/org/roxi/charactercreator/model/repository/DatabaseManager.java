@@ -5,13 +5,28 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class DatabaseManager {
+    private static DatabaseManager instance;
     private static final String URL = "jdbc:sqlite:dnd_data.db";
 
-    public static Connection getConnection() throws SQLException {
+    private DatabaseManager() {
+        try {
+            Class.forName("org.sqlite.JDBC");
+             initializeDatabase();
+        } catch (ClassNotFoundException e) {
+            System.out.println("Could not load SQLite driver: " + e.getMessage());
+        }
+    }
+    public static DatabaseManager getInstance() {
+        if (instance == null) {
+            instance = new DatabaseManager();
+        }
+        return instance;
+    }
+    public Connection getConnection() throws SQLException {
         return DriverManager.getConnection(URL);
     }
 
-    public static void initializeDatabase() {
+    public void initializeDatabase() {
         String createCharactersTable = """
             CREATE TABLE IF NOT EXISTS characters (
                 id TEXT PRIMARY KEY,
@@ -39,7 +54,7 @@ public class DatabaseManager {
             );
             """;
 
-        try (Connection conn = getConnection();
+        try (Connection conn = this.getConnection();
              Statement stmt = conn.createStatement()) {
             stmt.execute(createCharactersTable);
             stmt.execute(createUsersTable);

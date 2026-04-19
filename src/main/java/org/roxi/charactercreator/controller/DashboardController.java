@@ -8,16 +8,24 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.roxi.charactercreator.HelloApplication;
 import org.roxi.charactercreator.model.DnDCharacter;
 import org.roxi.charactercreator.model.Role;
 import org.roxi.charactercreator.model.User;
 import org.roxi.charactercreator.model.UserSession;
+import org.roxi.charactercreator.model.export.CsvExporter;
+import org.roxi.charactercreator.model.export.ExportStrategy;
+import org.roxi.charactercreator.model.export.JsonExporter;
+import org.roxi.charactercreator.model.export.XmlExporter;
 import org.roxi.charactercreator.model.repository.SqlCharacterRepository;
 import org.roxi.charactercreator.model.repository.UserRepository;
 import org.roxi.charactercreator.model.service.CharacterService;
 import org.roxi.charactercreator.model.service.UserService;
+
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -31,6 +39,9 @@ public class DashboardController {
     @FXML private Button createButton;
     @FXML private ComboBox<String> sortComboBox;
     @FXML private Button editButton;
+    @FXML private HBox exportBox;
+    @FXML private ComboBox<String> exportComboBox;
+    private List<DnDCharacter> currentDisplayedCharacters;
 
     private UserService userService = new UserService(new UserRepository());
     private ObservableList<DnDCharacter> allCharacters = FXCollections.observableArrayList();
@@ -41,6 +52,7 @@ public class DashboardController {
         User currentUser = UserSession.getInstance().getLoggedInUser();
         deleteButton.setManaged(true);
         createButton.setManaged(true);
+        exportComboBox.getItems().addAll("CSV", "JSON", "XML");
         sortComboBox.getItems().addAll("Name (A-Z)", "Species");
         sortComboBox.setValue("Name (A-Z)");
 
@@ -49,6 +61,10 @@ public class DashboardController {
             deleteButton.setVisible(false);
             deleteButton.setManaged(false);
             createButton.setVisible(true);
+            createButton.setManaged(true);
+            allCharacters.clear();
+            currentDisplayedCharacters = allCharacters;
+            updateCharacterListView(allCharacters);
         }
         else if (currentUser.getRole() == Role.ADMIN) {
             welcomeLabel.setText("Admin Mode: Manage Users");
@@ -59,7 +75,9 @@ public class DashboardController {
             createButton.setVisible(false);
             createButton.setManaged(false);
             editButton.setVisible(false);
+            exportBox.setVisible(false);
             editButton.setManaged(false);
+            exportBox.setManaged(false);
             loadAllUsers();
         }
         else {
@@ -78,6 +96,7 @@ public class DashboardController {
         String searchEmail = currentUser.getEmail();
         List<DnDCharacter> list = characterService.getCharactersByOwner(searchEmail);
         allCharacters.setAll(list);
+        currentDisplayedCharacters = list;
         updateCharacterListView(list);
     }
 
@@ -133,7 +152,7 @@ public class DashboardController {
             }
 
             if (characterToDelete != null) {
-                characterService.deleteCharacter(characterToDelete.getId());
+                characterService.deleteCharacter(characterToDelete);
                 loadCharacters();
             }
         }
@@ -143,6 +162,7 @@ public class DashboardController {
     protected void handleSearch() {
         String query = searchField.getText();
         List<DnDCharacter> filtered = characterService.searchAndSortCharacters(allCharacters, query, sortComboBox.getValue());
+        currentDisplayedCharacters = filtered;
         updateCharacterListView(filtered);
     }
 
@@ -174,5 +194,42 @@ public class DashboardController {
             stage.setScene(new Scene(loader.load()));
             stage.setTitle(title);
         } catch (IOException e) { e.printStackTrace(); }
+    }
+
+    public void handleExportAction(ActionEvent actionEvent) {
+        String format = exportComboBox.getValue();
+        if (format == null) {
+            System.out.println("Please select an export format first.");
+            return;
+        }
+
+        // 1. Ask the user where to save the file
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Export Characters");
+        fileChooser.setInitialFileName("my_characters." + format.toLowerCase());
+
+        // 2. Select the specific Strategy based on the dropdown!
+        ExportStrategy strategy = null;
+        switch (format) {
+            case "CSV":
+                strategy = new CsvExporter();
+                fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV Files", "*.csv"));
+                break;
+            case "JSON":
+                strategy = new JsonExporter();
+                fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON Files", "*.json"));
+                break;
+            case "XML":
+                strategy = new XmlExporter();
+                fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("XML Files", "*.xml"));
+                break;
+        }
+        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+        File saveLocation = fileChooser.showSaveDialog(stage);
+
+        if (saveLocation != null && strategy != null) {
+            strategy.export(currentDisplayedCharacters, saveLocation.getAbsolutePath());
+            System.out.println("Exported successfully!");
+        }
     }
 }

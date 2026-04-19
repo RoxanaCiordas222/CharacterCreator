@@ -10,7 +10,7 @@ import java.io.IOException;
 public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        org.roxi.charactercreator.model.repository.DatabaseManager.initializeDatabase();
+        org.roxi.charactercreator.model.repository.DatabaseManager.getInstance();
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("view/hello-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 800, 600);
         stage.setTitle("Hello!");
