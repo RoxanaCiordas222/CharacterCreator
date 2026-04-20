@@ -11,10 +11,8 @@ public class CsvExporter implements ExportStrategy {
     @Override
     public void export(List<DnDCharacter> characters, String filePath) {
         try (PrintWriter writer = new PrintWriter(filePath)) {
-            // 1. Write the header row
             writer.println("ID,Name,Owner,Species,Class,Level,STR,DEX,CON,INT,WIS,CHA");
 
-            // 2. Write the character data
             for (DnDCharacter c : characters) {
                 writer.printf("%s,%s,%s,%s,%s,%d,%d,%d,%d,%d,%d,%d%n",
                         c.getId(), c.getName(), c.getOwnerUsername(),

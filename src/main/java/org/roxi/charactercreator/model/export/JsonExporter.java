@@ -10,7 +10,7 @@ public class JsonExporter implements ExportStrategy{
     @Override
     public void export(List<DnDCharacter> characters, String filePath) {
         try (PrintWriter writer = new PrintWriter(filePath)) {
-            writer.println("["); // Start JSON array
+            writer.println("[");
 
             for (int i = 0; i < characters.size(); i++) {
                 DnDCharacter c = characters.get(i);
@@ -23,12 +23,11 @@ public class JsonExporter implements ExportStrategy{
                 writer.println("    \"level\": " + c.getLevel());
                 writer.print("  }");
 
-                // Add a comma if it's not the last character
                 if (i < characters.size() - 1) writer.println(",");
                 else writer.println();
             }
 
-            writer.println("]"); // End JSON array
+            writer.println("]");
             System.out.println("JSON Export successful: " + filePath);
         } catch (IOException e) {
             System.out.println("Error exporting to JSON: " + e.getMessage());

@@ -203,12 +203,10 @@ public class DashboardController {
             return;
         }
 
-        // 1. Ask the user where to save the file
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Export Characters");
         fileChooser.setInitialFileName("my_characters." + format.toLowerCase());
 
-        // 2. Select the specific Strategy based on the dropdown!
         ExportStrategy strategy = null;
         switch (format) {
             case "CSV":

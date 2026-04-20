@@ -12,7 +12,7 @@ public class XmlExporter implements ExportStrategy{
     public void export(List<DnDCharacter> characters, String filePath) {
         try (PrintWriter writer = new PrintWriter(filePath)) {
             writer.println("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
-            writer.println("<characters>"); // Start XML root
+            writer.println("<characters>");
 
             for (DnDCharacter c : characters) {
                 writer.println("  <character>");
@@ -25,7 +25,7 @@ public class XmlExporter implements ExportStrategy{
                 writer.println("  </character>");
             }
 
-            writer.println("</characters>"); // End XML root
+            writer.println("</characters>");
             System.out.println("XML Export successful: " + filePath);
         } catch (IOException e) {
             System.out.println("Error exporting to XML: " + e.getMessage());
